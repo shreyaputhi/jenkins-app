@@ -31,6 +31,10 @@ pipeline {
 
         stage('Test')
         {
+            agent{
+                docker 'node:18-alpine'
+                reuseNode true
+            }
             steps{
                 sh '''
                     test stage
