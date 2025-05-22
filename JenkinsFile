@@ -78,7 +78,7 @@ pipeline {
 
     // }
       
-      stage('Run Tests')
+      stage('Tests')
       {
         parallel
         {
@@ -98,7 +98,6 @@ pipeline {
                         npm test
                         '''
                 }
-            }
             }
 
             stage('E2E')
@@ -122,6 +121,7 @@ pipeline {
 
         }
         }
+    }
 
       post
         {
