@@ -140,8 +140,8 @@ pipeline {
             steps{
                 sh '''
                     echo "deploy stage"
-                    npm install netlify-cli -g
-                    netlify --version
+                    npm install netlify-cli
+                    node_modules/.bin/serve/netlify --version
                     '''
             }
         }
