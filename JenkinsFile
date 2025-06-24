@@ -141,7 +141,7 @@ pipeline {
                 sh '''
                     echo "deploy stage"
                     npm install netlify-cli
-                    node_modules/.bin/serve/netlify --version
+                    node_modules/.bin/netlify --version
                     '''
             }
         }
