@@ -139,7 +139,7 @@ pipeline {
             }
             steps{
                 sh '''
-                    deploy stage
+                    echo "deploy stage"
                     npm install netlify-cli -g
                     netlify --version
                     '''
