@@ -128,7 +128,7 @@ pipeline {
             }
         }
 
-        stage('Deploy')
+        stage('Deploys')
         {
             agent{
                 docker 
