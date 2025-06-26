@@ -3,7 +3,7 @@ pipeline {
 
     environment
     {
-        NETLIFY_SITE_ID='dd4e9d15-e74e-4c5e-a45a-da5f9a024f29'
+        SITE_ID='dd4e9d15-e74e-4c5e-a45a-da5f9a024f29'
     }
     stages {
         // stage('Hello') {
@@ -147,7 +147,7 @@ pipeline {
                     #npm install netlify-cli
                     npm install netlify-cli@20.1.1
                     node_modules/.bin/netlify --version
-                    echo "Deploying to site id: $NETLIFY_SITE_ID"
+                    echo "Deploying to site id: $SITE_ID"
                     '''
             }
         }
