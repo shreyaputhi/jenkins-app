@@ -83,7 +83,7 @@ pipeline {
             {
                 always
                 {
-                    junit 'jest-results/junit.xml'
+                    // junit 'jest-results/junit.xml'
                     publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'PlayWright Local', reportTitles: '', useWrapperFileDirectly: true])
                 }
             }
@@ -190,7 +190,7 @@ pipeline {
             {
                 always
                 {
-                    junit 'jest-results/junit.xml'
+                    // junit 'jest-results/junit.xml'
                     publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'PlayWright E2E', reportTitles: '', useWrapperFileDirectly: true])
                 }
             }
