@@ -78,17 +78,16 @@ pipeline {
                    npx playwright test --reporter=html
                    '''
             }
-        }
 
-          post
-        {
-            always
+             post
             {
-                junit 'jest-results/junit.xml'
-                publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'PlayWright Local', reportTitles: '', useWrapperFileDirectly: true])
+                always
+                {
+                    junit 'jest-results/junit.xml'
+                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'PlayWright Local', reportTitles: '', useWrapperFileDirectly: true])
+                }
             }
         }
-}
 
         stage("Tests"){
             parallel {
