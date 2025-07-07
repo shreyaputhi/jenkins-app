@@ -168,7 +168,7 @@ pipeline {
 
             environment
                 {
-                   process.env.CI_ENVIRONMENT_URL = 'https://fanciful-empanada-c7edc2.netlify.app'
+                   CI_ENVIRONMENT_URL = 'https://fanciful-empanada-c7edc2.netlify.app'
                 }
 
             steps{
