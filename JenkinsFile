@@ -1,377 +1,86 @@
-// pipeline {
-//     agent any
-
-//     environment
-//     {
-//         NETLIFY_SITE_ID='dd4e9d15-e74e-4c5e-a45a-da5f9a024f29'
-//         NETLIFY_AUTH_TOKEN=credentials('netlify-token')
-//     }
-//     stages {
-//         // stage('Hello') {
-//         //     steps {
-//         //         echo 'Hello World'
-//         //     }
-//         // }
-
-
-//         //this is a comment
-
-//         /*
-//         line1
-//         line2
-//         */
-
-//         stage('Build')
-//         {
-//             agent{
-//                 docker
-//                 {
-//                     image 'node:18-alpine'
-//                     reuseNode true
-//                 }
-//             }
-//             steps{
-//                 sh '''
-//                     ls -la
-//                     node --version
-//                     npm --version
-//                     npm ci
-//                     npm run build
-//                     ls -la
-//                 '''
-//             }
-//         }
-        
-
-//         // stage('Test')
-//         // {
-//         //     agent{
-//         //         docker 
-//         //         {
-//         //             image 'node:18-alpine'
-//         //             reuseNode true
-//         //         }
-//         //     }
-//         //     steps{
-//         //         sh '''
-//         //             test stage
-//         //             #test -f build/index.html
-//         //             npm test
-//         //             '''
-//         //     }
-//         // }
-
-//         stage('E2E')
-//         {
-//             agent{
-//                 docker 
-//                 {
-//                     image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
-//                     reuseNode true
-//                 }
-//             }
-//             steps{
-//                 sh '''
-//                    npm install serve
-//                    node_modules/.bin/serve -s build &
-//                    sleep 10
-//                    npx playwright install
-//                    npx playwright test --reporter=html
-//                    '''
-//             }
-
-//             post {
-//                 always {
-//                     // Save report files as artifact
-//                     archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
-
-//                     // Publish HTML report to Jenkins UI
-//                     publishHTML(target: [
-//                         reportDir: 'playwright-report',
-//                         reportFiles: 'index.html',
-//                         reportName: 'Playwright local',
-//                         keepAll: true,
-//                         alwaysLinkToLastBuild: true,
-//                         allowMissing: false
-//             ])
-//         }
-//     }
-//         }
-
-//         stage("Tests"){
-//             parallel {
-//                 stage('Unit Test')
-//                 {
-//                     agent{
-//                         docker 
-//                         {
-//                             image 'node:18-alpine'
-//                             reuseNode true
-//                         }
-//                     }
-//                     steps{
-//                         sh '''
-//                             test stage
-//                             #test -f build/index.html
-//                             npm test
-//                             '''
-//                     }
-//                     post{
-//                         always
-//                         {
-//                             junit 'jest-results/junit.xml'
-//                         }
-//                         }
-//                 }
-
-//                 stage('E2E')
-//                 {
-//                     agent{
-//                         docker 
-//                         {
-//                             image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
-//                             reuseNode true
-//                         }
-//                     }
-//                     steps{
-//                         sh '''
-//                         npm install serve
-//                         node_modules/.bin/serve -s build &
-//                         sleep 10
-//                         npx playwright test --reporter=html
-//                         '''
-//                     }
-//                     post{
-//                         always
-//                         {
-//                             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'PlayWright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
-//                         }
-//                         }
-//                 }
-//             }
-//         }
-
-//         stage('Deploys')
-//         {
-//             agent{
-//                 docker 
-//                 {
-//                     image 'node:18-alpine'
-//                     reuseNode true
-//                 }
-//             }
-//             steps{
-//                 sh '''
-//                     echo "deploy stage"
-//                     #npm install netlify-cli
-//                     npm install netlify-cli@20.1.1
-//                     node_modules/.bin/netlify --version
-//                     echo "Deploying to site id: $NETLIFY_SITE_ID"
-//                     node_modules/.bin/netlify status
-//                     node_modules/.bin/netlify deploy --dir=build --prod
-//                     echo "done!..."
-//                     '''
-//             }
-//         }
-
-//         stage(' Prod E2E')
-//         {
-//             agent{
-//                 docker 
-//                 {
-//                     image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
-//                     reuseNode true
-//                 }
-//             }
-
-//             environment
-//                 {
-//                    CI_ENVIRONMENT_URL = 'https://fanciful-empanada-c7edc2.netlify.app'
-//                 }
-
-//             steps{
-//                 sh '''
-//                     npx playwright install
-//                    npx playwright test --reporter=html
-//                    '''
-//             }
-
-//             post {
-//                 always {
-//                     // Save report files as artifact
-//                     archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
-
-//                     // Publish HTML report to Jenkins UI
-//                     publishHTML(target: [
-//                         reportDir: 'playwright-report',
-//                         reportFiles: 'index.html',
-//                         reportName: 'Playwright E2E',
-//                         keepAll: true,
-//                         alwaysLinkToLastBuild: true,
-//                         allowMissing: false
-//             ])
-//         }
-//     }
-//         }
-//     }
-// }
-
-//     post
-//     {
-//         always
-//         {
-//             junit 'jest-results/junit.xml'
-//             publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'PlayWright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
-//         }
-//     }
-// }
-
-
-
-
-
-
 pipeline {
-  agent any
+    agent any
 
-  environment {
-    NETLIFY_SITE_ID='dd4e9d15-e74e-4c5e-a45a-da5f9a024f29'
-    NETLIFY_AUTH_TOKEN = credentials('netlify-token') // Replace with your actual ID
-  }
-
-  stages {
-    stage('Build') {
-      agent {
-        docker {
-          image 'node:18-alpine'
-          reuseNode true
-        }
-      }
-      steps {
-        sh '''
-          node --version
-          npm --version
-          npm ci
-          npm run build
-        '''
-      }
+    environment
+    {
+        NETLIFY_SITE_ID='dd4e9d15-e74e-4c5e-a45a-da5f9a024f29'
+        NETLIFY_AUTH_TOKEN=credentials('netlify-token')
     }
+    stages {
+        // stage('Hello') {
+        //     steps {
+        //         echo 'Hello World'
+        //     }
+        // }
 
-    stage('E2E') {
-      agent {
-        docker {
-          image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
-        }
-      }
-      steps {
-        sh '''
-          npm install serve
-          sleep 10
-          node_modules/.bin/serve -s build &
-          npx playwright install
-          npx playwright test --reporter=html --output=playwright-report-e2e
-        '''
-      }
-      post {
-        always {
-          archiveArtifacts artifacts: 'playwright-report-e2e/**', allowEmptyArchive: true
-          publishHTML(target: [
-            reportDir: 'playwright-report-e2e',
-            reportFiles: 'index.html',
-            reportName: 'Playwright Report (Local E2E)',
-            keepAll: true
-          ])
-        }
-      }
-    }
 
-    stage('Tests') {
-      parallel {
-        stage('Unit Test') {
-          agent {
-            docker {
-              image 'node:18-alpine'
-              reuseNode true
-            }
-          }
-          steps {
-            sh '''
-              echo "test stage"
-              npm test
-              npm install serve
-            '''
-          }
-          post {
-            always {
-              junit '**/jest-results/*.xml'
-            }
-          }
-        }
+        //this is a comment
 
-        stage('E2E') {
-          agent {
-            docker {
-              image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
-            }
-          }
-          steps {
-            sh '''
-              npx playwright install
-              npx playwright test --reporter=html --output=playwright-report-tests
-            '''
-          }
-          post {
-            always {
-              archiveArtifacts artifacts: 'playwright-report-tests/**', allowEmptyArchive: true
-              publishHTML(target: [
-                reportDir: 'playwright-report-tests',
-                reportFiles: 'index.html',
-                reportName: 'Playwright Report (Tests)',
-                keepAll: true
-              ])
-            }
-          }
-        }
-      }
-    }
+        /*
+        line1
+        line2
+        */
 
-    stage('Deploys') {
-      agent {
-        docker {
-          image 'node:18-alpine'
-          reuseNode true
-        }
-      }
-      steps {
-        sh '''
-          echo 'deploy stage'
-          npm install netlify-cli@20.1.1
-          node_modules/.bin/netlify --version
-          echo 'Deploying to site id: dd4e9d15-e74e-4c5e-a45a-da5f9a024f29'
-          node_modules/.bin/netlify status
-          node_modules/.bin/netlify deploy --dir=build --prod
-          echo 'done!...'
-        '''
-      }
-    }
-
-    stage('Prod E2E') {
-      agent {
-        docker {
-          image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
-        }
-      }
-        environment
+        stage('Build')
+        {
+            agent{
+                docker
                 {
-                   CI_ENVIRONMENT_URL = 'https://fanciful-empanada-c7edc2.netlify.app'
+                    image 'node:18-alpine'
+                    reuseNode true
                 }
-        steps {
+            }
+            steps{
                 sh '''
-                npx playwright install
-                npx playwright test --reporter=html --output=playwright-report-prod
+                    ls -la
+                    node --version
+                    npm --version
+                    npm ci
+                    npm run build
+                    ls -la
                 '''
             }
-        post {
+        }
+        
+
+        // stage('Test')
+        // {
+        //     agent{
+        //         docker 
+        //         {
+        //             image 'node:18-alpine'
+        //             reuseNode true
+        //         }
+        //     }
+        //     steps{
+        //         sh '''
+        //             test stage
+        //             #test -f build/index.html
+        //             npm test
+        //             '''
+        //     }
+        // }
+
+        stage('E2E')
+        {
+            agent{
+                docker 
+                {
+                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                    reuseNode true
+                }
+            }
+            steps{
+                sh '''
+                   npm install serve
+                   node_modules/.bin/serve -s build &
+                   sleep 10
+                   npx playwright install
+                   npx playwright test --reporter=html
+                   '''
+            }
+
+            post {
             always {
             archiveArtifacts artifacts: 'playwright-report-prod/**', allowEmptyArchive: true
             publishHTML(target: [
@@ -382,6 +91,127 @@ pipeline {
             ])
             }
         }
+        }
+
+        stage("Tests"){
+            parallel {
+                stage('Unit Test')
+                {
+                    agent{
+                        docker 
+                        {
+                            image 'node:18-alpine'
+                            reuseNode true
+                        }
+                    }
+                    steps{
+                        sh '''
+                            test stage
+                            #test -f build/index.html
+                            npm test
+                            '''
+                    }
+                    post{
+                        always
+                        {
+                            junit 'jest-results/junit.xml'
+                        }
+                        }
+                }
+
+                stage('E2E')
+                {
+                    agent{
+                        docker 
+                        {
+                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                            reuseNode true
+                        }
+                    }
+                    steps{
+                        sh '''
+                        npm install serve
+                        node_modules/.bin/serve -s build &
+                        sleep 10
+                        npx playwright test --reporter=html
+                        '''
+                    }
+                    post{
+                        always
+                        {
+                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'PlayWright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+                        }
+                        }
+                }
+            }
+        }
+
+        stage('Deploys')
+        {
+            agent{
+                docker 
+                {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps{
+                sh '''
+                    echo "deploy stage"
+                    #npm install netlify-cli
+                    npm install netlify-cli@20.1.1
+                    node_modules/.bin/netlify --version
+                    echo "Deploying to site id: $NETLIFY_SITE_ID"
+                    node_modules/.bin/netlify status
+                    node_modules/.bin/netlify deploy --dir=build --prod
+                    echo "done!..."
+                    '''
+            }
+        }
+
+        stage(' Prod E2E')
+        {
+            agent{
+                docker 
+                {
+                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                    reuseNode true
+                }
+            }
+
+            environment
+                {
+                   CI_ENVIRONMENT_URL = 'https://fanciful-empanada-c7edc2.netlify.app'
+                }
+
+            steps{
+                sh '''
+                    npx playwright install
+                   npx playwright test --reporter=html
+                   '''
+            }
+
+             post {
+            always {
+            archiveArtifacts artifacts: 'playwright-report-prod/**', allowEmptyArchive: true
+            publishHTML(target: [
+                reportDir: 'playwright-report-prod',
+                reportFiles: 'index.html',
+                reportName: 'Playwright Report (Prod E2E)',
+                keepAll: true
+            ])
+            }
+        }
+        }
     }
-  }
+}
+
+    post
+    {
+        always
+        {
+            junit 'jest-results/junit.xml'
+            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'PlayWright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+        }
+    }
 }
