@@ -75,18 +75,27 @@ pipeline {
                    npm install serve
                    node_modules/.bin/serve -s build &
                    sleep 10
+                   npx playwright install
                    npx playwright test --reporter=html
                    '''
             }
 
-             post
-            {
-                always
-                {
-                    // junit 'jest-results/junit.xml'
-                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'PlayWright Local', reportTitles: '', useWrapperFileDirectly: true])
-                }
-            }
+            post {
+                always {
+                    // Save report files as artifact
+                    archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
+
+                    // Publish HTML report to Jenkins UI
+                    publishHTML(target: [
+                        reportDir: 'playwright-report',
+                        reportFiles: 'index.html',
+                        reportName: 'Playwright local',
+                        keepAll: true,
+                        alwaysLinkToLastBuild: true,
+                        allowMissing: false
+            ])
+        }
+    }
         }
 
         stage("Tests"){
@@ -182,18 +191,27 @@ pipeline {
 
             steps{
                 sh '''
+                    npx playwright install
                    npx playwright test --reporter=html
                    '''
             }
 
-            post
-            {
-                always
-                {
-                    // junit 'jest-results/junit.xml'
-                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, icon: '', keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'PlayWright E2E', reportTitles: '', useWrapperFileDirectly: true])
-                }
-            }
+            post {
+                always {
+                    // Save report files as artifact
+                    archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
+
+                    // Publish HTML report to Jenkins UI
+                    publishHTML(target: [
+                        reportDir: 'playwright-report',
+                        reportFiles: 'index.html',
+                        reportName: 'Playwright E2E',
+                        keepAll: true,
+                        alwaysLinkToLastBuild: true,
+                        allowMissing: false
+            ])
+        }
+    }
         }
     }
 }
