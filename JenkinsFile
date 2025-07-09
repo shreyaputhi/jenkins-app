@@ -76,8 +76,7 @@ pipeline {
                    node_modules/.bin/serve -s build &
                    sleep 10
                    npx playwright install
-                   npx playwright test --reporter=html --reporter-options outputFolder=playwright-report-prod,open=never
-                   ls -la playwright-report-prod || echo "Report folder missing!"
+                   REPORT_DIR=playwright-report-prod npx playwright test
 
                    '''
             }
@@ -171,43 +170,31 @@ pipeline {
             }
         }
 
-        stage(' Prod E2E')
-        {
-            agent{
-                docker 
-                {
-                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
-                    reuseNode true
+        stage('Prod E2E') {
+            agent {
+                docker {
+                image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
                 }
             }
-
-            environment
-                {
-                   CI_ENVIRONMENT_URL = 'https://fanciful-empanada-c7edc2.netlify.app'
-                }
-
-            steps{
+            steps {
                 sh '''
                     npx playwright install
-                    npx playwright test --reporter=html --reporter-options outputFolder=playwright-report-prod,open=never
-                    ls -la playwright-report-prod || echo "Report folder missing!"
-                   '''
+                    REPORT_DIR=playwright-report-prod npx playwright test
+                '''
+            }
+            post {
+                always {
+                archiveArtifacts artifacts: 'playwright-report-prod/**', allowEmptyArchive: true
+                publishHTML(target: [
+                    reportDir: 'playwright-report-prod',
+                    reportFiles: 'index.html',
+                    reportName: 'Playwright Report (Prod E2E)',
+                    keepAll: true
+                ])
+                }
+            }
             }
 
-             post {
-            always {
-            archiveArtifacts artifacts: 'playwright-report-prod/**', allowEmptyArchive: true
-            publishHTML(target: [
-                reportDir: 'playwright-report-prod',
-                reportFiles: 'index.html',
-                reportName: 'Playwright Report (Prod E2E)',
-                keepAll: true
-            ])
-            }
-        }
-        }
-    }
-}
 
 //     post
 //     {

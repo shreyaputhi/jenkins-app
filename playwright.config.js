@@ -27,7 +27,10 @@ module.exports = defineConfig({
   // ],
 
   // playwright.config.ts
-  reporter: [['html', { outputFolder: 'playwright-report-prod', open: 'never' }]],
+  reporter: [['html', {
+    outputFolder: process.env.REPORT_DIR || 'playwright-report',
+    open: 'never'
+  }]],
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
