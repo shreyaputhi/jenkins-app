@@ -76,7 +76,9 @@ pipeline {
                    node_modules/.bin/serve -s build &
                    sleep 10
                    npx playwright install
-                   npx playwright test --reporter=html
+                   npx playwright test --reporter=html --reporter-options outputFolder=playwright-report-prod,open=never
+                   ls -la playwright-report-prod || echo "Report folder missing!"
+
                    '''
             }
 
@@ -187,7 +189,8 @@ pipeline {
             steps{
                 sh '''
                     npx playwright install
-                   npx playwright test --reporter=html
+                    npx playwright test --reporter=html --reporter-options outputFolder=playwright-report-prod,open=never
+                    ls -la playwright-report-prod || echo "Report folder missing!"
                    '''
             }
 
