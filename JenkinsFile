@@ -135,9 +135,9 @@ pipeline {
                 }
             }
 
-        //     environment {
-        //         CI_ENVIRONMENT_URL = "${env.staging_url}"
-        //     }
+            environment {
+                CI_ENVIRONMENT_URL = "staging_url has to be set"
+            }
 
             steps {
                 sh '''
