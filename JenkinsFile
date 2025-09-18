@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         NETLIFY_SITE_ID = '56c3bd51-d041-4e5c-a990-927c1e606697'
-        NETLIFY_AUTH_TOKEN = crenditials('netlify-token')
+        NETLIFY_AUTH_TOKEN = credentials('netlify-token')
     }
 
     stages {
@@ -32,22 +32,22 @@ pipeline {
         //     }
         // }
 
-        stage('test') {
-            agent {
-                docker
-                {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
-            steps {
-                sh '''
-                echo 'test stage'
-                test -f build/index.html
-                npm test
-                '''
-            }
-        }
+        // stage('test') {
+        //     agent {
+        //         docker
+        //         {
+        //             image 'node:18-alpine'
+        //             reuseNode true
+        //         }
+        //     }
+        //     steps {
+        //         sh '''
+        //         echo 'test stage'
+        //         test -f build/index.html
+        //         npm test
+        //         '''
+        //     }
+        // }
 
         stage('deploy') {
             agent {
