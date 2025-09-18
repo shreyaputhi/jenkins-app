@@ -1,77 +1,11 @@
 pipeline {
     agent any
 
-    environment {
-        NETLIFY_SITE_ID = 'd2ef8043-1545-4690-88cf-32d3d29bb3d1'
-        NETLIFY_AUTH_TOKEN = credentials('netlify-token')
-    }
     stages {
         stage('Hello') {
             steps {
                 echo 'Hello World'
             }
         }
-
-        // stage('Build')
-        // {
-        //     agent{
-        //         docker{
-        //             image 'node:18-alpine'
-        //             reuseNode true
-        //         }
-        //     }
-
-        //     steps{
-        //         sh '''
-        //             ls -la
-        //             node --version
-        //             npm --version
-        //             npm ci
-        //             npm run build
-        //             ls -la
-        //         '''
-        //     }
-        // }
-
-         stage('Test')
-        {
-            agent{
-                docker{
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
-
-            steps{
-                sh '''
-                    test stage
-                    test -f build/index.html
-                    npm test
-                '''
-            }
-        }
-
-        stage('Deploy')
-        {
-            agent{
-                docker{
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
-
-            steps{
-                sh '''
-                   echo 'minor change'
-                   npm install netlify-cli@20.1.1
-                   node_modules/.bin/netlify --version
-                   echo "deploy stage"
-                   echo "deploying to site id: $NETLIFY_SITE_ID"
-                   node_modules/.bin/netlify status
-                   node_modules/.bin/netlify deploy --dir=build --prod
-                '''
-            }
-        }
-
     }
 }
