@@ -1,80 +1,10 @@
 pipeline {
     agent any
-     environment {
-            NETLIFY_SITE_ID = 'dd4e9d15-e74e-4c5e-a45a-da5f9a024f29'
-            NETLIFY_AUTH_TOKEN = credentials('netlify-token')
-    }
-        stages {
 
+    stages {
         stage('Hello') {
             steps {
-               echo("Hello world!....")
-            }
-        }
-
-         stage('Build') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
-            steps {
-                sh '''
-                    ls -la
-                    node --version
-                    npm --version
-                    npm ci
-                    npm run build
-                    ls -la
-                '''
-            }
-         }
-
-        stage('Test stage') {
-            agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            
-            }
-            steps {
-                sh '''
-                    test -f build/index.html
-                    npm test
-                '''
-            }
-        }
-
-           stage('Deploy Prod') {
-            agent {
-                docker {
-                    image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
-                    reuseNode true
-                }
-            }
-
-            environment {
-                CI_ENVIRONMENT_URL = 'https://fanciful-empanada-c7edc2.netlify.app/'
-            }
-
-            steps {
-                sh '''
-                node --version
-                npm install netlify-cli@20.1.1
-                node_modules/.bin/netlify --version
-                echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
-                node_modules/.bin/netlify status
-                node_modules/.bin/netlify deploy --dir=build --prod
-                npx playwright test  --reporter=html
-                '''
-            }
-
-            post {
-                always {
-                    publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright E2E', reportTitles: '', useWrapperFileDirectly: true])
-                }
+                echo 'Hello World'
             }
         }
     }
