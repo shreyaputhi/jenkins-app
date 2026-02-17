@@ -394,11 +394,10 @@ pipeline {
 
                         yum install -y amazon-linux-extras
                         amazon-linux-extras install docker -y
-                        yum install -y docker
-                        yum install -y docker unzip
+                        #yum install -y docker
                         
                         dockerd & sleep 5
-                        yum install -y awscli
+                        yum install -y awscli 
                         docker version
                         aws --version
                         docker build -t my-jenkinsapp .
@@ -406,6 +405,11 @@ pipeline {
                     '''
                 }
             }
+
+//The amazon-linux-extras command is only available on Amazon Linux, not in the amazon/aws-cli Docker image (which is based on Alpine Linux). 
+// To use amazon-linux-extras, you must use an Amazon Linux-based Docker image.
+//You can use amazonlinux:2 as your build image and install both Docker and AWS CLI inside it.
+//This will allow you to use amazon-linux-extras and have both Docker and AWS CLI available.
 
         stage('AWS') {
             agent{
