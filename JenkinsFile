@@ -320,7 +320,7 @@
 
 pipeline {
     agent any
-                        yum install -y docker unzip
+    
     environment {
         REACT_APP_VERSION = "1.0.$BUILD_ID"
         AWS_DEFAULT_REGION = 'us-east-1'
@@ -395,6 +395,7 @@ pipeline {
                         yum install -y amazon-linux-extras
                         amazon-linux-extras install docker -y
                         yum install -y docker
+                        yum install -y docker unzip
                         
                         dockerd & sleep 5
                         curl \"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\" -o \"awscliv2.zip\"
