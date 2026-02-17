@@ -395,7 +395,7 @@ pipeline {
                         yum install -y amazon-linux-extras
                         amazon-linux-extras install docker -y
                         yum install -y docker
-                        #service docker start
+                        
                         dockerd & sleep 5
                         curl \"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip\" -o \"awscliv2.zip\"
                         unzip awscliv2.zip
