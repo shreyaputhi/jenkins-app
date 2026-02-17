@@ -394,12 +394,11 @@ pipeline {
 
                         yum install -y amazon-linux-extras
                         amazon-linux-extras install docker -y
-                        #yum install -y docker
                         
-                        dockerd & sleep 5
-                        yum install -y awscli 
+                        #dockerd & sleep 5
+                        #yum install -y awscli 
                         docker version
-                        aws --version
+                        #aws --version
                         docker build -t my-jenkinsapp .
                         
                     '''
