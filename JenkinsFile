@@ -392,7 +392,6 @@ pipeline {
                         #amazon-linux-extras install docker
                         #docker build -t my-jenkinsapp .
 
-                        #yum install -y amazon-linux-extras
                         amazon-linux-extras install docker -y
                         docker build -t my-jenkinsapp .
                         
