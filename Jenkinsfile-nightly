@@ -5,14 +5,15 @@ pipeline {
 
         // stage('Docker') {
         //     steps {
-        //         sh 'docker build -f ci/Dockerfile my-playwright .'
+        //         sh 'docker build -t -f ci/Dockerfile my-playwright .'
         //     }
 
-        stage('Build Docker images ') {
-            steps {
-                sh 'docker build -f ci/Dockerfile-playwright my-playwright .'
-                sh 'docker build -f ci/Dockerfile-aws-cli my-aws-cli .'
-            }
-        }
+       stage('Build Docker images') {
+        steps {
+            sh 'docker build -t my-playwright -f ci/Dockerfile-playwright .'
+            sh 'docker build -t my-aws-cli -f ci/Dockerfile-aws-cli .'
+    }
+}
+
     }
 }
