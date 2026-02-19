@@ -395,9 +395,6 @@ pipeline {
 
                         #amazon-linux-extras install docker -y
 
-                        #yum install -y awscli
-                        #aws --version
-
                         docker build -t my-jenkinsapp .
                         
                     '''
