@@ -1,12 +1,7 @@
 FROM amazonlinux:2
 
-#RUN yum install -y glibc libcurl
 RUN amazon-linux-extras install docker -y
-#RUN yum install -y jq unzip curl
-#RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-#RUN unzip awscliv2.zip
-#RUN ./aws/install
-#RUN rm -rf awscliv2.zip aws
 RUN yum install -y awscli
+RUN yum install jq -y
 RUN docker --version
 RUN aws --version
