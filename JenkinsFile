@@ -395,8 +395,7 @@ pipeline {
 
                         #amazon-linux-extras install docker -y
 
-                        #docker build -t my-jenkinsapp .
-                        docker buildx build --platform linux/amd64 -t my-jenkinsapp .
+                        docker build -t my-jenkinsapp .
                         
                     '''
                 }
