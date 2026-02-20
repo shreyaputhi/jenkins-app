@@ -419,7 +419,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     sh '''
-                    yum install -y awscli
+                    #yum install -y awscli
                     aws --version
                     #yum install jq -y
                     #aws ecs register-task-definition --cli-input-json file://aws/task-definition.json
