@@ -327,6 +327,7 @@ pipeline {
         AWS_ECS_CLUSTER = 'LearnJenkinsApp-cluster-prod'
         AWS_ECS_SERVICE_PROD = 'LearnJenkinsApp-TaskDefinition-Prod-service'
         AWS_ECS_TD_PROD = 'LearnJenkinsApp-TaskDefinition-Prod'
+        APP_NAME = 'learnjenkinsapp'
     }
 
     stages {
@@ -395,7 +396,8 @@ pipeline {
 
                         #amazon-linux-extras install docker -y
 
-                        docker build -t my-jenkinsapp .
+                        #docker build -t my-jenkinsapp .
+                        docker build -t $APP_NAME:$REACT_APP_VERSION .
                         
                     '''
                 }
