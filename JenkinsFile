@@ -391,23 +391,24 @@ pipeline {
             }
             
                 steps {
-                    sh '''
-                        #amazon-linux-extras install docker
-                        #docker build -t my-jenkinsapp .
+                    withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                        sh '''
+                            #amazon-linux-extras install docker
+                            #docker build -t my-jenkinsapp .
 
-                        #amazon-linux-extras install docker -y
+                            #amazon-linux-extras install docker -y
 
-                        #docker build -t my-jenkinsapp .
-                        #docker build -t $APP_NAME:$REACT_APP_VERSION .
+                            #docker build -t my-jenkinsapp .
+                            #docker build -t $APP_NAME:$REACT_APP_VERSION .
 
-                        docker build -t $AWS_DOCKER_REGISTRY/$APP_NAME:$REACT_APP_VERSION .
-                        aws ecr get-login-password | docker login --username AWS --password-stdin $AWS_DOCKER_REGISTRY
-                        docker push $AWS_DOCKER_REGISTRY/$APP_NAME:$REACT_APP_VERSION
+                            docker build -t $AWS_DOCKER_REGISTRY/$APP_NAME:$REACT_APP_VERSION .
+                            aws ecr get-login-password | docker login --username AWS --password-stdin $AWS_DOCKER_REGISTRY
+                            docker push $AWS_DOCKER_REGISTRY/$APP_NAME:$REACT_APP_VERSION
                         
                     '''
                 }
             }
-
+        }
 //The amazon-linux-extras command is only available on Amazon Linux, not in the amazon/aws-cli Docker image (which is based on Alpine Linux). 
 // To use amazon-linux-extras, you must use an Amazon Linux-based Docker image.
 //You can use amazonlinux:2 as your build image and install Docker inside it.
